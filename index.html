@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Soporte Técnico</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #061526, #0d2b4c);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      color: #111827;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 580px;
+      background: #ffffff;
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.35);
+    }
+
+    h1 {
+      text-align: center;
+      margin: 0;
+      color: #0d2b4c;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #6b7280;
+      margin-top: 8px;
+      margin-bottom: 20px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      background: #e5e7eb;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .tab.active {
+      background: #2563eb;
+      color: white;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      font-weight: bold;
+      font-size: 14px;
+      color: #1f2937;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 13px;
+      margin-top: 6px;
+      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .options {
+      margin-top: 10px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f3f4f6;
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: normal;
+      cursor: pointer;
+    }
+
+    .option input {
+      width: auto;
+      margin: 0;
+    }
+
+    .main-btn {
+      width: 100%;
+      margin-top: 22px;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      background: #2563eb;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .main-btn:hover {
+      background: #1d4ed8;
+    }
+
+    .main-btn:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    .alert {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      color: #9a3412;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .message {
+      display: none;
+      margin-top: 16px;
+      padding: 13px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .success {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #86efac;
+    }
+
+    .error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    .info {
+      background: #dbeafe;
+      color: #1e40af;
+      border: 1px solid #93c5fd;
+    }
+
+    .footer {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .id-box {
+      background: #f3f4f6;
+      padding: 10px;
+      border-radius: 10px;
+      margin-top: 8px;
+      font-weight: bold;
+      word-break: break-all;
+      color: #111827;
+    }
+
+    .copy-btn {
+      margin-top: 10px;
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      background: #111827;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .copy-btn:hover {
+      background: #374151;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Soporte Técnico</h1>
+    <p class="subtitle">Solicita asistencia o consulta tu reporte</p>
+
+    <div class="tabs">
+      <button class="tab active" onclick="mostrarSeccion('crear')">Crear reporte</button>
+      <button class="tab" onclick="mostrarSeccion('consultar')">Consultar reporte</button>
+    </div>
+
+    <div id="crear" class="section active">
+      <div class="alert">
+        Por seguridad, no coloques contraseñas en este formulario.
+        Tu solicitud será atendida por orden de llegada.
+      </div>
+
+      <form id="supportForm">
+
+        <label>Usuario o correo de la cuenta</label>
+        <input type="text" id="usuario" placeholder="Ej: cliente@gmail.com" required>
+
+        <label>Número de WhatsApp</label>
+        <input type="text" id="whatsapp" placeholder="Ej: 70000000" required>
+
+        <label>Plataforma</label>
+        <select id="plataforma" required>
+          <option value="">Selecciona una plataforma</option>
+          <option value="Netflix">Netflix</option>
+          <option value="Disney Plus">Disney Plus</option>
+          <option value="Amazon Prime Video">Amazon Prime Video</option>
+          <option value="HBO Max">HBO Max</option>
+          <option value="Flujo TV">Flujo TV</option>
+          <option value="YouTube Premium">YouTube Premium</option>
+          <option value="Spotify">Spotify</option>
+          <option value="Otra">Otra</option>
+        </select>
+
+        <label>¿Qué opción requiere?</label>
+
+        <div class="options">
+          <label class="option">
+            <input type="checkbox" name="opcion" value="Restablecer contraseña">
+            Restablecer contraseña
+          </label>
+
+          <label class="option">
+            <input type="checkbox" name="opcion" value="Código inicio de sesión">
+            Código inicio de sesión
+          </label>
+
+          <label class="option">
+            <input type="checkbox" name="opcion" value="Actualizar hogar">
+            Actualizar hogar
+          </label>
+
+          <label class="option">
+            <input type="checkbox" name="opcion" value="Código de acceso temporal">
+            Código de acceso temporal
+          </label>
+        </div>
+
+        <label>Detalle adicional</label>
+        <textarea id="detalle" placeholder="Describe brevemente el problema"></textarea>
+
+        <button class="main-btn" id="btnEnviar" type="submit">Enviar reporte</button>
+
+        <div id="mensajeCrear" class="message"></div>
+      </form>
+    </div>
+
+    <div id="consultar" class="section">
+      <div class="alert">
+        Para proteger la privacidad, solo podrás consultar tu reporte con el ID y el WhatsApp registrado.
+      </div>
+
+      <label>ID de reporte</label>
+      <input type="text" id="buscarId" placeholder="Ej: REP-20260612-193412-1234">
+
+      <label>WhatsApp registrado</label>
+      <input type="text" id="buscarWhatsapp" placeholder="Ej: 70000000">
+
+      <button class="main-btn" onclick="consultarReporte()">Consultar</button>
+
+      <div id="mensajeConsulta" class="message"></div>
+    </div>
+
+    <div class="footer">
+      Soporte por orden de llegada.
+    </div>
+  </div>
+
+  <script>
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbx6rji2Kxyocf-8TM8wNxlwFQorlvmvypFqCMNM_qMzQBE-L9nL4-0sIArz34puoiXM/exec';
+
+    let ultimoIdGenerado = '';
+
+    function mostrarSeccion(seccion) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+
+      document.getElementById(seccion).classList.add('active');
+
+      if (seccion === 'crear') {
+        document.querySelectorAll('.tab')[0].classList.add('active');
+      } else {
+        document.querySelectorAll('.tab')[1].classList.add('active');
+      }
+    }
+
+    function generarIdReporte() {
+      const fecha = new Date();
+
+      const y = fecha.getFullYear();
+      const m = String(fecha.getMonth() + 1).padStart(2, '0');
+      const d = String(fecha.getDate()).padStart(2, '0');
+      const h = String(fecha.getHours()).padStart(2, '0');
+      const min = String(fecha.getMinutes()).padStart(2, '0');
+      const s = String(fecha.getSeconds()).padStart(2, '0');
+      const random = Math.floor(1000 + Math.random() * 9000);
+
+      return `REP-${y}${m}${d}-${h}${min}${s}-${random}`;
+    }
+
+    function mostrarMensaje(id, texto, tipo) {
+      const box = document.getElementById(id);
+      box.innerHTML = texto;
+      box.className = 'message ' + tipo;
+      box.style.display = 'block';
+    }
+
+    function copiarId() {
+      if (!ultimoIdGenerado) return;
+
+      navigator.clipboard.writeText(ultimoIdGenerado).then(function() {
+        alert('ID copiado correctamente');
+      });
+    }
+
+    document.getElementById('supportForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const btnEnviar = document.getElementById('btnEnviar');
+
+      const usuario = document.getElementById('usuario').value.trim();
+      const whatsapp = document.getElementById('whatsapp').value.trim();
+      const plataforma = document.getElementById('plataforma').value.trim();
+      const detalle = document.getElementById('detalle').value.trim();
+
+      const opciones = Array.from(
+        document.querySelectorAll('input[name="opcion"]:checked')
+      ).map(option => option.value);
+
+      if (!usuario || !whatsapp || !plataforma) {
+        mostrarMensaje('mensajeCrear', 'Completa todos los campos obligatorios.', 'error');
+        return;
+      }
+
+      if (opciones.length === 0) {
+        mostrarMensaje('mensajeCrear', 'Selecciona al menos una opción de soporte.', 'error');
+        return;
+      }
+
+      const idReporte = generarIdReporte();
+      ultimoIdGenerado = idReporte;
+
+      const data = {
+        idReporte: idReporte,
+        usuario: usuario,
+        whatsapp: whatsapp,
+        plataforma: plataforma,
+        opciones: opciones,
+        detalle: detalle
+      };
+
+      btnEnviar.disabled = true;
+      btnEnviar.textContent = 'Enviando...';
+
+      fetch(WEB_APP_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: JSON.stringify(data)
+      });
+
+      setTimeout(function() {
+        mostrarMensaje(
+          'mensajeCrear',
+          `
+          Reporte enviado correctamente.<br><br>
+          <b>Guarda este ID para consultar tu reporte:</b>
+          <div class="id-box">${idReporte}</div>
+          <button type="button" class="copy-btn" onclick="copiarId()">Copiar ID</button>
+          `,
+          'success'
+        );
+
+        document.getElementById('supportForm').reset();
+
+        btnEnviar.disabled = false;
+        btnEnviar.textContent = 'Enviar reporte';
+      }, 1000);
+    });
+
+    function consultarReporte() {
+      const id = document.getElementById('buscarId').value.trim();
+      const whatsapp = document.getElementById('buscarWhatsapp').value.trim();
+
+      if (!id || !whatsapp) {
+        mostrarMensaje('mensajeConsulta', 'Debes colocar el ID de reporte y el WhatsApp.', 'error');
+        return;
+      }
+
+      mostrarMensaje('mensajeConsulta', 'Consultando reporte...', 'info');
+
+      const callbackName = 'callbackReporte' + Date.now();
+
+      window[callbackName] = function(respuesta) {
+        if (respuesta.ok) {
+          mostrarMensaje(
+            'mensajeConsulta',
+            `
+            <b>Reporte encontrado</b><br><br>
+            <b>ID:</b> ${respuesta.idReporte}<br>
+            <b>Usuario:</b> ${respuesta.usuario}<br>
+            <b>Plataforma:</b> ${respuesta.plataforma}<br>
+            <b>Solicitud:</b> ${respuesta.solicitud}<br>
+            <b>Detalle:</b> ${respuesta.detalle}<br>
+            <b>Estado:</b> ${respuesta.estado}<br>
+            <b>Respuesta soporte:</b> ${respuesta.respuesta}
+            `,
+            'info'
+          );
+        } else {
+          mostrarMensaje('mensajeConsulta', respuesta.mensaje, 'error');
+        }
+
+        delete window[callbackName];
+      };
+
+      const script = document.createElement('script');
+      script.src = `${WEB_APP_URL}?accion=buscar&id=${encodeURIComponent(id)}&whatsapp=${encodeURIComponent(whatsapp)}&callback=${callbackName}`;
+      document.body.appendChild(script);
+    }
+  </script>
+
+</body>
+</html>
