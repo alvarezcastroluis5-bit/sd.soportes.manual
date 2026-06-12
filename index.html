@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Soporte Técnico</title>
 
   <style>
@@ -15,28 +14,59 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background: linear-gradient(135deg, #061526, #0d2b4c);
+      padding: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
-      color: #111827;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: url('fondo.jpg') center center / cover no-repeat;
+      z-index: -2;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 19, 38, 0.72);
+      z-index: -1;
     }
 
     .container {
       width: 100%;
-      max-width: 580px;
-      background: #ffffff;
-      border-radius: 22px;
+      max-width: 590px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(6px);
+      border-radius: 24px;
       padding: 28px;
       box-shadow: 0 20px 45px rgba(0,0,0,0.35);
     }
 
+    .logo-wrap {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .logo-wrap img {
+      width: 110px;
+      max-width: 100%;
+      border-radius: 14px;
+      background: white;
+      padding: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    }
+
     h1 {
       text-align: center;
-      margin: 0;
+      margin: 8px 0 0 0;
       color: #0d2b4c;
-      font-size: 28px;
+      font-size: 30px;
     }
 
     .subtitle {
@@ -84,9 +114,15 @@
       color: #1f2937;
     }
 
+    .helper {
+      margin-top: 5px;
+      font-size: 12px;
+      color: #6b7280;
+      line-height: 1.4;
+    }
+
     input,
-    select,
-    textarea {
+    select {
       width: 100%;
       padding: 13px;
       margin-top: 6px;
@@ -94,18 +130,13 @@
       border-radius: 12px;
       font-size: 15px;
       outline: none;
+      background: #fff;
     }
 
     input:focus,
-    select:focus,
-    textarea:focus {
+    select:focus {
       border-color: #2563eb;
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-    }
-
-    textarea {
-      min-height: 90px;
-      resize: vertical;
     }
 
     .options {
@@ -150,17 +181,6 @@
     .main-btn:disabled {
       background: #9ca3af;
       cursor: not-allowed;
-    }
-
-    .alert {
-      background: #fff7ed;
-      border: 1px solid #fed7aa;
-      color: #9a3412;
-      padding: 12px;
-      border-radius: 12px;
-      font-size: 14px;
-      margin-bottom: 16px;
-      line-height: 1.4;
     }
 
     .message {
@@ -226,8 +246,11 @@
 </head>
 
 <body>
-
   <div class="container">
+    <div class="logo-wrap">
+      <img src="logo.jpg" alt="Logo SD Panel">
+    </div>
+
     <h1>Soporte Técnico</h1>
     <p class="subtitle">Solicita asistencia o consulta tu reporte</p>
 
@@ -237,18 +260,16 @@
     </div>
 
     <div id="crear" class="section active">
-      <div class="alert">
-        Por seguridad, no coloques contraseñas en este formulario.
-        Tu solicitud será atendida por orden de llegada.
-      </div>
-
       <form id="supportForm">
 
-        <label>Usuario o correo de la cuenta</label>
-        <input type="text" id="usuario" placeholder="Ej: cliente@gmail.com" required>
+        <label>Correo que requiere soporte</label>
+        <input type="email" id="usuario" placeholder="Ej: cliente@gmail.com" required>
 
-        <label>Número de WhatsApp</label>
-        <input type="text" id="whatsapp" placeholder="Ej: 70000000" required>
+        <label>Distribuidor</label>
+        <p class="helper">
+          Coloca el número de WhatsApp de tu proveedor con el prefijo de tu país. Ejemplo: +591XXXXXXX
+        </p>
+        <input type="text" id="whatsapp" placeholder="Ej: +59170000000" required>
 
         <label>Plataforma</label>
         <select id="plataforma" required>
@@ -287,28 +308,22 @@
           </label>
         </div>
 
-        <label>Detalle adicional</label>
-        <textarea id="detalle" placeholder="Describe brevemente el problema"></textarea>
-
         <button class="main-btn" id="btnEnviar" type="submit">Enviar reporte</button>
-
         <div id="mensajeCrear" class="message"></div>
       </form>
     </div>
 
     <div id="consultar" class="section">
-      <div class="alert">
-        Para proteger la privacidad, solo podrás consultar tu reporte con el ID y el WhatsApp registrado.
-      </div>
-
       <label>ID de reporte</label>
       <input type="text" id="buscarId" placeholder="Ej: REP-20260612-193412-1234">
 
-      <label>WhatsApp registrado</label>
-      <input type="text" id="buscarWhatsapp" placeholder="Ej: 70000000">
+      <label>WhatsApp del proveedor</label>
+      <p class="helper">
+        Coloca el número de WhatsApp de tu proveedor con el prefijo de tu país. Ejemplo: +591XXXXXXX
+      </p>
+      <input type="text" id="buscarWhatsapp" placeholder="Ej: +59170000000">
 
       <button class="main-btn" onclick="consultarReporte()">Consultar</button>
-
       <div id="mensajeConsulta" class="message"></div>
     </div>
 
@@ -337,7 +352,6 @@
 
     function generarIdReporte() {
       const fecha = new Date();
-
       const y = fecha.getFullYear();
       const m = String(fecha.getMonth() + 1).padStart(2, '0');
       const d = String(fecha.getDate()).padStart(2, '0');
@@ -368,11 +382,9 @@
       e.preventDefault();
 
       const btnEnviar = document.getElementById('btnEnviar');
-
       const usuario = document.getElementById('usuario').value.trim();
       const whatsapp = document.getElementById('whatsapp').value.trim();
       const plataforma = document.getElementById('plataforma').value.trim();
-      const detalle = document.getElementById('detalle').value.trim();
 
       const opciones = Array.from(
         document.querySelectorAll('input[name="opcion"]:checked')
@@ -397,7 +409,7 @@
         whatsapp: whatsapp,
         plataforma: plataforma,
         opciones: opciones,
-        detalle: detalle
+        detalle: ''
       };
 
       btnEnviar.disabled = true;
@@ -422,7 +434,6 @@
         );
 
         document.getElementById('supportForm').reset();
-
         btnEnviar.disabled = false;
         btnEnviar.textContent = 'Enviar reporte';
       }, 1000);
@@ -433,7 +444,7 @@
       const whatsapp = document.getElementById('buscarWhatsapp').value.trim();
 
       if (!id || !whatsapp) {
-        mostrarMensaje('mensajeConsulta', 'Debes colocar el ID de reporte y el WhatsApp.', 'error');
+        mostrarMensaje('mensajeConsulta', 'Debes colocar el ID de reporte y el WhatsApp del proveedor.', 'error');
         return;
       }
 
@@ -448,10 +459,9 @@
             `
             <b>Reporte encontrado</b><br><br>
             <b>ID:</b> ${respuesta.idReporte}<br>
-            <b>Usuario:</b> ${respuesta.usuario}<br>
+            <b>Correo:</b> ${respuesta.usuario}<br>
             <b>Plataforma:</b> ${respuesta.plataforma}<br>
             <b>Solicitud:</b> ${respuesta.solicitud}<br>
-            <b>Detalle:</b> ${respuesta.detalle}<br>
             <b>Estado:</b> ${respuesta.estado}<br>
             <b>Respuesta soporte:</b> ${respuesta.respuesta}
             `,
@@ -469,6 +479,5 @@
       document.body.appendChild(script);
     }
   </script>
-
 </body>
 </html>
