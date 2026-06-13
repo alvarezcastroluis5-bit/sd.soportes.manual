@@ -382,27 +382,17 @@
     .support-link {
       display: inline-block;
       margin-top: 8px;
-      padding: 10px 12px;
+      padding: 10px 14px;
       background: #111111;
       color: #ffffff;
       border-radius: 12px;
       font-weight: bold;
       text-decoration: none;
-      word-break: break-word;
       box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
     }
 
     .support-link:hover {
       background: #000000;
-    }
-
-    .support-url {
-      display: block;
-      margin-top: 7px;
-      font-size: 11px;
-      color: #374151;
-      word-break: break-all;
-      font-weight: normal;
     }
 
     .status-badge {
@@ -640,8 +630,7 @@
       return textoSeguro.replace(
         /(https?:\/\/[^\s<]+)/g,
         function(url) {
-          return '<a class="support-link" href="' + url + '" target="_blank" rel="noopener noreferrer">Abrir enlace</a>' +
-                 '<span class="support-url">' + url + '</span>';
+          return '<a class="support-link" href="' + url + '" target="_blank" rel="noopener noreferrer">Abrir enlace</a>';
         }
       );
     }
