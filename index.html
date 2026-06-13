@@ -531,27 +531,27 @@
 
         <div class="options">
           <label class="option">
-            <input type="checkbox" name="opcion" value="Restablecer contraseña">
+            <input type="radio" name="opcion" value="Restablecer contraseña">
             <span>Restablecer contraseña</span>
           </label>
 
           <label class="option">
-            <input type="checkbox" name="opcion" value="Código inicio de sesión">
+            <input type="radio" name="opcion" value="Código inicio de sesión">
             <span>Código inicio de sesión</span>
           </label>
 
           <label class="option">
-            <input type="checkbox" name="opcion" value="Actualizar hogar">
+            <input type="radio" name="opcion" value="Actualizar hogar">
             <span>Actualizar hogar</span>
           </label>
 
           <label class="option">
-            <input type="checkbox" name="opcion" value="Código de acceso temporal">
+            <input type="radio" name="opcion" value="Código de acceso temporal">
             <span>Código de acceso temporal</span>
           </label>
 
           <label class="option">
-            <input type="checkbox" name="opcion" value="Código de verificación de 6 dígitos">
+            <input type="radio" name="opcion" value="Código de verificación de 6 dígitos">
             <span>Código de verificación de 6 dígitos</span>
           </label>
         </div>
@@ -594,10 +594,12 @@
     function activarOpcionesVerdes() {
       document.querySelectorAll('.option input').forEach(function(input) {
         input.addEventListener('change', function() {
+          document.querySelectorAll('.option').forEach(function(option) {
+            option.classList.remove('selected');
+          });
+
           if (input.checked) {
             input.closest('.option').classList.add('selected');
-          } else {
-            input.closest('.option').classList.remove('selected');
           }
         });
       });
@@ -722,22 +724,19 @@
       const whatsapp = limpiarTelefono(document.getElementById('whatsapp').value);
       const plataforma = document.getElementById('plataforma').value.trim();
 
-      const opciones = Array.from(
-        document.querySelectorAll('input[name="opcion"]:checked')
-      ).map(function(option) {
-        return option.value;
-      });
+      const opcionSeleccionada = document.querySelector('input[name="opcion"]:checked');
 
       if (!usuario || !whatsapp || !plataforma) {
         mostrarMensaje('mensajeCrear', 'Completa todos los campos obligatorios.', 'error');
         return;
       }
 
-      if (opciones.length === 0) {
-        mostrarMensaje('mensajeCrear', 'Selecciona al menos una opción de soporte.', 'error');
+      if (!opcionSeleccionada) {
+        mostrarMensaje('mensajeCrear', 'Selecciona una opción de soporte.', 'error');
         return;
       }
 
+      const solicitud = opcionSeleccionada.value;
       const idReporte = generarIdReporte();
       ultimoIdGenerado = idReporte;
 
@@ -779,7 +778,7 @@
         '&usuario=' + encodeURIComponent(usuario) +
         '&whatsapp=' + encodeURIComponent(whatsapp) +
         '&plataforma=' + encodeURIComponent(plataforma) +
-        '&solicitud=' + encodeURIComponent(opciones.join(', ')) +
+        '&solicitud=' + encodeURIComponent(solicitud) +
         '&detalle=' + encodeURIComponent('') +
         '&callback=' + encodeURIComponent(callbackName);
 
