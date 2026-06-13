@@ -207,8 +207,8 @@
     }
 
     .info {
-      background: #dbeafe;
-      color: #1e40af;
+      background: #eff6ff;
+      color: #1e3a8a;
       border: 1px solid #93c5fd;
     }
 
@@ -243,6 +243,96 @@
 
     .copy-btn:hover {
       background: #374151;
+    }
+
+    .result-card {
+      background: #ffffff;
+      border: 1px solid #dbeafe;
+      border-radius: 18px;
+      padding: 18px;
+      margin-top: 8px;
+      box-shadow: 0 10px 25px rgba(30, 64, 175, 0.10);
+    }
+
+    .result-title {
+      margin: 0 0 16px 0;
+      font-size: 20px;
+      font-weight: bold;
+      color: #1d4ed8;
+      text-align: center;
+    }
+
+    .result-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .result-row {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 13px;
+      padding: 11px 13px;
+    }
+
+    .result-label {
+      display: block;
+      font-size: 11px;
+      font-weight: bold;
+      color: #6b7280;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .result-value {
+      font-size: 14px;
+      color: #111827;
+      word-break: break-word;
+      line-height: 1.4;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 7px 13px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .status-pendiente {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-enproceso {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .status-resuelto {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status-rechazado {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .result-response {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+    }
+
+    .result-response .result-label {
+      color: #065f46;
+    }
+
+    .result-response .result-value {
+      color: #064e3b;
+      font-weight: 600;
     }
   </style>
 </head>
@@ -394,6 +484,26 @@
         .replace(/-/g, '');
     }
 
+    function escapeHTML(valor) {
+      return String(valor || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function obtenerClaseEstado(estado) {
+      const valor = String(estado || '').toLowerCase().trim();
+
+      if (valor === 'pendiente') return 'status-pendiente';
+      if (valor === 'en proceso' || valor === 'enproceso') return 'status-enproceso';
+      if (valor === 'resuelto') return 'status-resuelto';
+      if (valor === 'rechazado') return 'status-rechazado';
+
+      return 'status-enproceso';
+    }
+
     function mostrarMensaje(id, texto, tipo) {
       const box = document.getElementById(id);
       box.innerHTML = texto;
@@ -463,14 +573,14 @@
             'mensajeCrear',
             'Reporte enviado correctamente.<br><br>' +
             '<b>Guarda este ID para consultar tu reporte:</b>' +
-            '<div class="id-box">' + idReporte + '</div>' +
+            '<div class="id-box">' + escapeHTML(idReporte) + '</div>' +
             '<button type="button" class="copy-btn" onclick="copiarId()">Copiar ID</button>',
             'success'
           );
 
           document.getElementById('supportForm').reset();
         } else {
-          mostrarMensaje('mensajeCrear', respuesta.mensaje, 'error');
+          mostrarMensaje('mensajeCrear', escapeHTML(respuesta.mensaje), 'error');
         }
 
         delete window[callbackName];
@@ -508,20 +618,58 @@
 
       window[callbackName] = function(respuesta) {
         if (respuesta.ok) {
+          const claseEstado = obtenerClaseEstado(respuesta.estado);
+
           mostrarMensaje(
             'mensajeConsulta',
-            '<b>Reporte encontrado</b><br><br>' +
-            '<b>ID:</b> ' + respuesta.idReporte + '<br>' +
-            '<b>Correo:</b> ' + respuesta.usuario + '<br>' +
-            '<b>WhatsApp proveedor:</b> ' + respuesta.whatsapp + '<br>' +
-            '<b>Plataforma:</b> ' + respuesta.plataforma + '<br>' +
-            '<b>Solicitud:</b> ' + respuesta.solicitud + '<br>' +
-            '<b>Estado:</b> ' + respuesta.estado + '<br>' +
-            '<b>Respuesta soporte:</b> ' + respuesta.respuesta,
+            '<div class="result-card">' +
+              '<h3 class="result-title">Reporte encontrado</h3>' +
+
+              '<div class="result-grid">' +
+
+                '<div class="result-row">' +
+                  '<span class="result-label">ID de reporte</span>' +
+                  '<div class="result-value">' + escapeHTML(respuesta.idReporte) + '</div>' +
+                '</div>' +
+
+                '<div class="result-row">' +
+                  '<span class="result-label">Correo</span>' +
+                  '<div class="result-value">' + escapeHTML(respuesta.usuario) + '</div>' +
+                '</div>' +
+
+                '<div class="result-row">' +
+                  '<span class="result-label">WhatsApp proveedor</span>' +
+                  '<div class="result-value">' + escapeHTML(respuesta.whatsapp) + '</div>' +
+                '</div>' +
+
+                '<div class="result-row">' +
+                  '<span class="result-label">Plataforma</span>' +
+                  '<div class="result-value">' + escapeHTML(respuesta.plataforma) + '</div>' +
+                '</div>' +
+
+                '<div class="result-row">' +
+                  '<span class="result-label">Solicitud</span>' +
+                  '<div class="result-value">' + escapeHTML(respuesta.solicitud) + '</div>' +
+                '</div>' +
+
+                '<div class="result-row">' +
+                  '<span class="result-label">Estado</span>' +
+                  '<div class="result-value">' +
+                    '<span class="status-badge ' + claseEstado + '">' + escapeHTML(respuesta.estado) + '</span>' +
+                  '</div>' +
+                '</div>' +
+
+                '<div class="result-row result-response">' +
+                  '<span class="result-label">Respuesta soporte</span>' +
+                  '<div class="result-value">' + escapeHTML(respuesta.respuesta) + '</div>' +
+                '</div>' +
+
+              '</div>' +
+            '</div>',
             'info'
           );
         } else {
-          mostrarMensaje('mensajeConsulta', respuesta.mensaje, 'error');
+          mostrarMensaje('mensajeConsulta', escapeHTML(respuesta.mensaje), 'error');
         }
 
         delete window[callbackName];
