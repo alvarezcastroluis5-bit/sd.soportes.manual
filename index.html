@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Soporte Técnico SD Panel</title>
 
   <style>
@@ -24,10 +25,6 @@
       --info-text: #1e3a8a;
       --info-border: #93c5fd;
       --shadow: 0 20px 50px rgba(15, 23, 42, 0.28);
-      --radius-xl: 28px;
-      --radius-lg: 18px;
-      --radius-md: 14px;
-      --radius-sm: 12px;
     }
 
     * {
@@ -35,7 +32,8 @@
       font-family: Arial, sans-serif;
     }
 
-    html, body {
+    html,
+    body {
       margin: 0;
       padding: 0;
       min-height: 100%;
@@ -76,8 +74,8 @@
       max-width: 620px;
       background: var(--card);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.45);
-      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: 28px;
       padding: 28px;
       box-shadow: var(--shadow);
     }
@@ -177,7 +175,7 @@
       padding: 14px 15px;
       font-size: 15px;
       outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     input:focus,
@@ -289,7 +287,7 @@
 
     .id-box {
       margin-top: 10px;
-      background: rgba(255,255,255,0.65);
+      background: rgba(255, 255, 255, 0.65);
       border: 1px solid #d1d5db;
       color: #111827;
       border-radius: 12px;
@@ -373,6 +371,32 @@
       font-weight: 600;
     }
 
+    .support-link {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 10px 12px;
+      background: #2563eb;
+      color: #ffffff;
+      border-radius: 12px;
+      font-weight: bold;
+      text-decoration: none;
+      word-break: break-word;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.18);
+    }
+
+    .support-link:hover {
+      background: #1d4ed8;
+    }
+
+    .support-url {
+      display: block;
+      margin-top: 7px;
+      font-size: 11px;
+      color: #047857;
+      word-break: break-all;
+      font-weight: normal;
+    }
+
     .status-badge {
       display: inline-block;
       padding: 7px 12px;
@@ -441,6 +465,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <div class="container">
@@ -466,7 +491,9 @@
 
         <div class="field">
           <label for="whatsapp">Distribuidor</label>
-          <p class="helper">Coloca el número de WhatsApp de tu proveedor con el prefijo de tu país. Ejemplo: +591XXXXXXX</p>
+          <p class="helper">
+            Coloca el número de WhatsApp de tu proveedor con el prefijo de tu país. Ejemplo: +591XXXXXXX
+          </p>
           <input type="text" id="whatsapp" placeholder="Ej: +59170000000" required>
         </div>
 
@@ -528,7 +555,9 @@
 
       <div class="field">
         <label for="buscarWhatsapp">WhatsApp del proveedor</label>
-        <p class="helper">Coloca el número de WhatsApp de tu proveedor con el prefijo de tu país. Ejemplo: +591XXXXXXX</p>
+        <p class="helper">
+          Coloca el número de WhatsApp de tu proveedor con el prefijo de tu país. Ejemplo: +591XXXXXXX
+        </p>
         <input type="text" id="buscarWhatsapp" placeholder="Ej: +59170000000">
       </div>
 
@@ -597,6 +626,18 @@
         .replace(/'/g, '&#039;');
     }
 
+    function convertirEnlaces(valor) {
+      const textoSeguro = escapeHTML(valor);
+
+      return textoSeguro.replace(
+        /(https?:\/\/[^\s<]+)/g,
+        function(url) {
+          return '<a class="support-link" href="' + url + '" target="_blank" rel="noopener noreferrer">Abrir enlace</a>' +
+                 '<span class="support-url">' + url + '</span>';
+        }
+      );
+    }
+
     function obtenerClaseEstado(estado) {
       const valor = String(estado || '').toLowerCase().trim();
 
@@ -648,6 +689,7 @@
       e.preventDefault();
 
       const btnEnviar = document.getElementById('btnEnviar');
+
       const usuario = document.getElementById('usuario').value.trim();
       const whatsapp = limpiarTelefono(document.getElementById('whatsapp').value);
       const plataforma = document.getElementById('plataforma').value.trim();
@@ -767,7 +809,7 @@
 
                 '<div class="result-row result-response">' +
                   '<span class="result-label">Respuesta soporte</span>' +
-                  '<div class="result-value">' + escapeHTML(respuesta.respuesta) + '</div>' +
+                  '<div class="result-value">' + convertirEnlaces(respuesta.respuesta) + '</div>' +
                 '</div>' +
 
               '</div>' +
