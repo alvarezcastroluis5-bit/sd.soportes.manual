@@ -28,7 +28,7 @@
       content: "";
       position: fixed;
       inset: 0;
-      background: url('fondoo.jpg') center center / cover no-repeat;
+      background: url('fondo.jpg') center center / cover no-repeat;
       z-index: -2;
     }
 
@@ -252,7 +252,7 @@
   <div class="container">
 
     <div class="logo-wrap">
-      <img src="sd.jpg" alt="SD Panel">
+      <img src="logo.jpg" alt="SD Panel">
     </div>
 
     <h1>Soporte Técnico</h1>
@@ -404,7 +404,7 @@
       });
     }
 
-    function llamarJSONP(url, callbackName) {
+    function llamarJSONP(url) {
       const script = document.createElement('script');
       script.src = url;
 
@@ -485,7 +485,7 @@
         '&detalle=' + encodeURIComponent('') +
         '&callback=' + encodeURIComponent(callbackName);
 
-      llamarJSONP(url, callbackName);
+      llamarJSONP(url);
     });
 
     function consultarReporte() {
@@ -529,7 +529,7 @@
         '&whatsapp=' + encodeURIComponent(whatsapp) +
         '&callback=' + encodeURIComponent(callbackName);
 
-      llamarJSONP(url, callbackName);
+      llamarJSONP(url);
     }
   </script>
 
