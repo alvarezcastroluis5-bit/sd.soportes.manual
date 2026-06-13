@@ -1,27 +1,55 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Soporte Técnico SD Panel</title>
 
   <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-soft: #dbeafe;
+      --text: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --card: rgba(255, 255, 255, 0.94);
+      --success-bg: #dcfce7;
+      --success-text: #166534;
+      --success-border: #86efac;
+      --error-bg: #fee2e2;
+      --error-text: #991b1b;
+      --error-border: #fca5a5;
+      --info-bg: #eff6ff;
+      --info-text: #1e3a8a;
+      --info-border: #93c5fd;
+      --shadow: 0 20px 50px rgba(15, 23, 42, 0.28);
+      --radius-xl: 28px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 12px;
+    }
+
     * {
       box-sizing: border-box;
       font-family: Arial, sans-serif;
     }
 
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
+      min-height: 100%;
+    }
+
+    body {
       min-height: 100vh;
-      padding: 20px;
+      padding: 24px;
       display: flex;
       justify-content: center;
       align-items: center;
       position: relative;
+      color: var(--text);
       overflow-x: hidden;
-      color: #111827;
     }
 
     body::before {
@@ -29,75 +57,87 @@
       position: fixed;
       inset: 0;
       background: url('fondo.jpg') center center / cover no-repeat;
-      z-index: -2;
+      z-index: -3;
+      transform: scale(1.03);
     }
 
     body::after {
       content: "";
       position: fixed;
       inset: 0;
-      background: rgba(4, 19, 38, 0.76);
-      z-index: -1;
+      background:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.78), rgba(30, 41, 59, 0.62)),
+        radial-gradient(circle at top right, rgba(37, 99, 235, 0.25), transparent 30%);
+      z-index: -2;
     }
 
     .container {
       width: 100%;
-      max-width: 590px;
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(6px);
-      border-radius: 24px;
+      max-width: 620px;
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.45);
+      border-radius: var(--radius-xl);
       padding: 28px;
-      box-shadow: 0 20px 45px rgba(0,0,0,0.35);
+      box-shadow: var(--shadow);
     }
 
     .logo-wrap {
-      text-align: center;
-      margin-bottom: 12px;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 14px;
     }
 
     .logo-wrap img {
-      width: 120px;
-      max-width: 100%;
-      border-radius: 16px;
-      background: white;
+      width: 110px;
+      height: auto;
+      border-radius: 18px;
+      background: #fff;
       padding: 8px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
     }
 
     h1 {
+      margin: 8px 0 6px 0;
       text-align: center;
-      margin: 8px 0 0 0;
-      color: #0d2b4c;
       font-size: 30px;
+      line-height: 1.1;
+      color: #0f2d57;
     }
 
     .subtitle {
+      margin: 0 0 22px 0;
       text-align: center;
-      color: #6b7280;
-      margin-top: 8px;
-      margin-bottom: 20px;
+      color: var(--muted);
+      font-size: 16px;
     }
 
     .tabs {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
+      background: #f1f5f9;
+      border-radius: 16px;
+      padding: 6px;
     }
 
     .tab {
-      flex: 1;
-      padding: 12px;
       border: none;
+      background: transparent;
+      color: #1e293b;
+      padding: 14px 12px;
       border-radius: 12px;
-      background: #e5e7eb;
-      cursor: pointer;
       font-weight: bold;
       font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
 
     .tab.active {
-      background: #2563eb;
-      color: white;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.22);
     }
 
     .section {
@@ -108,197 +148,239 @@
       display: block;
     }
 
+    .field {
+      margin-bottom: 16px;
+    }
+
     label {
       display: block;
-      margin-top: 14px;
-      font-weight: bold;
+      margin-bottom: 7px;
       font-size: 14px;
-      color: #1f2937;
+      font-weight: bold;
+      color: #1e293b;
     }
 
     .helper {
-      margin-top: 5px;
+      margin: -2px 0 9px 0;
       font-size: 12px;
-      color: #6b7280;
-      line-height: 1.4;
+      line-height: 1.45;
+      color: var(--muted);
     }
 
     input,
     select {
       width: 100%;
-      padding: 13px;
-      margin-top: 6px;
-      border: 1px solid #d1d5db;
-      border-radius: 12px;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      color: var(--text);
+      border-radius: 14px;
+      padding: 14px 15px;
       font-size: 15px;
       outline: none;
-      background: #fff;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
     }
 
     input:focus,
     select:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
+    }
+
+    .options-title {
+      margin-top: 6px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #1e293b;
     }
 
     .options {
-      margin-top: 10px;
       display: grid;
-      gap: 10px;
+      gap: 12px;
+      grid-template-columns: 1fr;
+      margin-bottom: 8px;
     }
 
     .option {
       display: flex;
       align-items: center;
-      gap: 10px;
-      background: #f3f4f6;
-      padding: 12px;
-      border-radius: 12px;
-      font-weight: normal;
+      gap: 12px;
+      background: linear-gradient(180deg, #ffffff, #f8fafc);
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 15px 14px;
       cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .option:hover {
+      transform: translateY(-1px);
+      border-color: #bfdbfe;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
     }
 
     .option input {
-      width: auto;
+      width: 18px;
+      height: 18px;
       margin: 0;
+      accent-color: var(--primary);
+      flex: 0 0 auto;
+    }
+
+    .option span {
+      font-size: 14px;
+      color: #1e293b;
+      line-height: 1.4;
     }
 
     .main-btn {
       width: 100%;
-      margin-top: 22px;
-      padding: 14px;
       border: none;
-      border-radius: 14px;
-      background: #2563eb;
-      color: white;
+      border-radius: 16px;
+      padding: 15px 18px;
+      margin-top: 18px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
+      box-shadow: 0 14px 28px rgba(37, 99, 235, 0.22);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
     }
 
     .main-btn:hover {
-      background: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 18px 32px rgba(37, 99, 235, 0.28);
     }
 
     .main-btn:disabled {
-      background: #9ca3af;
+      opacity: 0.72;
       cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
 
     .message {
       display: none;
-      margin-top: 16px;
-      padding: 13px;
-      border-radius: 12px;
+      margin-top: 18px;
+      padding: 15px;
+      border-radius: 16px;
       font-size: 14px;
-      line-height: 1.5;
+      line-height: 1.55;
     }
 
     .success {
-      background: #dcfce7;
-      color: #166534;
-      border: 1px solid #86efac;
+      background: var(--success-bg);
+      color: var(--success-text);
+      border: 1px solid var(--success-border);
     }
 
     .error {
-      background: #fee2e2;
-      color: #991b1b;
-      border: 1px solid #fca5a5;
+      background: var(--error-bg);
+      color: var(--error-text);
+      border: 1px solid var(--error-border);
     }
 
     .info {
-      background: #eff6ff;
-      color: #1e3a8a;
-      border: 1px solid #93c5fd;
-    }
-
-    .footer {
-      margin-top: 18px;
-      text-align: center;
-      font-size: 12px;
-      color: #6b7280;
+      background: var(--info-bg);
+      color: var(--info-text);
+      border: 1px solid var(--info-border);
     }
 
     .id-box {
-      background: #f3f4f6;
-      padding: 10px;
-      border-radius: 10px;
-      margin-top: 8px;
-      font-weight: bold;
-      word-break: break-all;
+      margin-top: 10px;
+      background: rgba(255,255,255,0.65);
+      border: 1px solid #d1d5db;
       color: #111827;
+      border-radius: 12px;
+      padding: 12px;
+      font-weight: bold;
+      word-break: break-word;
     }
 
     .copy-btn {
-      margin-top: 10px;
       width: 100%;
-      padding: 10px;
       border: none;
-      border-radius: 10px;
-      background: #111827;
-      color: white;
+      border-radius: 12px;
+      margin-top: 10px;
+      padding: 12px;
+      background: #0f172a;
+      color: #fff;
       font-weight: bold;
       cursor: pointer;
+      transition: background 0.2s ease;
     }
 
     .copy-btn:hover {
-      background: #374151;
+      background: #1e293b;
     }
 
     .result-card {
-      background: #ffffff;
+      background: #fff;
       border: 1px solid #dbeafe;
-      border-radius: 18px;
+      border-radius: 20px;
       padding: 18px;
-      margin-top: 8px;
-      box-shadow: 0 10px 25px rgba(30, 64, 175, 0.10);
+      box-shadow: 0 12px 26px rgba(30, 64, 175, 0.08);
     }
 
     .result-title {
       margin: 0 0 16px 0;
-      font-size: 20px;
-      font-weight: bold;
-      color: #1d4ed8;
       text-align: center;
+      font-size: 20px;
+      color: var(--primary-dark);
     }
 
     .result-grid {
       display: grid;
-      gap: 10px;
+      gap: 11px;
     }
 
     .result-row {
       background: #f8fafc;
       border: 1px solid #e5e7eb;
-      border-radius: 13px;
-      padding: 11px 13px;
+      border-radius: 14px;
+      padding: 12px 13px;
     }
 
     .result-label {
       display: block;
+      margin-bottom: 5px;
       font-size: 11px;
       font-weight: bold;
-      color: #6b7280;
-      margin-bottom: 4px;
       text-transform: uppercase;
       letter-spacing: 0.4px;
+      color: #64748b;
     }
 
     .result-value {
       font-size: 14px;
-      color: #111827;
+      line-height: 1.45;
+      color: #0f172a;
       word-break: break-word;
-      line-height: 1.4;
+    }
+
+    .result-response {
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+    }
+
+    .result-response .result-label {
+      color: #065f46;
+    }
+
+    .result-response .result-value {
+      color: #064e3b;
+      font-weight: 600;
     }
 
     .status-badge {
       display: inline-block;
-      padding: 7px 13px;
+      padding: 7px 12px;
       border-radius: 999px;
       font-size: 12px;
       font-weight: bold;
       text-transform: uppercase;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.35px;
     }
 
     .status-pendiente {
@@ -321,26 +403,47 @@
       color: #991b1b;
     }
 
-    .result-response {
-      background: #ecfdf5;
-      border: 1px solid #a7f3d0;
+    .footer {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 12px;
+      color: #64748b;
     }
 
-    .result-response .result-label {
-      color: #065f46;
+    @media (min-width: 640px) {
+      .options {
+        grid-template-columns: 1fr 1fr;
+      }
     }
 
-    .result-response .result-value {
-      color: #064e3b;
-      font-weight: 600;
+    @media (max-width: 520px) {
+      body {
+        padding: 14px;
+      }
+
+      .container {
+        padding: 20px;
+        border-radius: 22px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      .subtitle {
+        font-size: 14px;
+      }
+
+      .tab {
+        font-size: 13px;
+        padding: 12px 10px;
+      }
     }
   </style>
 </head>
-
 <body>
 
   <div class="container">
-
     <div class="logo-wrap">
       <img src="logo.jpg" alt="SD Panel">
     </div>
@@ -356,80 +459,80 @@
     <div id="crear" class="section active">
       <form id="supportForm">
 
-        <label>Correo que requiere soporte</label>
-        <input type="email" id="usuario" placeholder="Ej: cliente@gmail.com" required>
+        <div class="field">
+          <label for="usuario">Correo que requiere soporte</label>
+          <input type="email" id="usuario" placeholder="Ej: cliente@gmail.com" required>
+        </div>
 
-        <label>Distribuidor</label>
-        <p class="helper">
-          Coloca el número de WhatsApp de tu proveedor con el prefijo de tu país. Ejemplo: +591XXXXXXX
-        </p>
-        <input type="text" id="whatsapp" placeholder="Ej: +59170000000" required>
+        <div class="field">
+          <label for="whatsapp">Distribuidor</label>
+          <p class="helper">Coloca el número de WhatsApp de tu proveedor con el prefijo de tu país. Ejemplo: +591XXXXXXX</p>
+          <input type="text" id="whatsapp" placeholder="Ej: +59170000000" required>
+        </div>
 
-        <label>Plataforma</label>
-        <select id="plataforma" required>
-          <option value="">Selecciona una plataforma</option>
-          <option value="Netflix">Netflix</option>
-          <option value="Disney Plus">Disney Plus</option>
-          <option value="Amazon Prime Video">Amazon Prime Video</option>
-          <option value="HBO Max">HBO Max</option>
-          <option value="Flujo TV">Flujo TV</option>
-          <option value="YouTube Premium">YouTube Premium</option>
-          <option value="Spotify">Spotify</option>
-          <option value="Otra">Otra</option>
-        </select>
+        <div class="field">
+          <label for="plataforma">Plataforma</label>
+          <select id="plataforma" required>
+            <option value="">Selecciona una plataforma</option>
+            <option value="Netflix">Netflix</option>
+            <option value="Disney Plus">Disney Plus</option>
+            <option value="Amazon Prime Video">Amazon Prime Video</option>
+            <option value="HBO Max">HBO Max</option>
+            <option value="Flujo TV">Flujo TV</option>
+            <option value="YouTube Premium">YouTube Premium</option>
+            <option value="Spotify">Spotify</option>
+            <option value="Otra">Otra</option>
+          </select>
+        </div>
 
-        <label>¿Qué opción requiere?</label>
+        <div class="options-title">¿Qué opción requiere?</div>
 
         <div class="options">
           <label class="option">
             <input type="checkbox" name="opcion" value="Restablecer contraseña">
-            Restablecer contraseña
+            <span>Restablecer contraseña</span>
           </label>
 
           <label class="option">
             <input type="checkbox" name="opcion" value="Código inicio de sesión">
-            Código inicio de sesión
+            <span>Código inicio de sesión</span>
           </label>
 
           <label class="option">
             <input type="checkbox" name="opcion" value="Actualizar hogar">
-            Actualizar hogar
+            <span>Actualizar hogar</span>
           </label>
 
           <label class="option">
             <input type="checkbox" name="opcion" value="Código de acceso temporal">
-            Código de acceso temporal
+            <span>Código de acceso temporal</span>
           </label>
 
           <label class="option">
             <input type="checkbox" name="opcion" value="Código de verificación de 6 dígitos">
-            Código de verificación de 6 dígitos
+            <span>Código de verificación de 6 dígitos</span>
           </label>
         </div>
 
-        <button class="main-btn" id="btnEnviar" type="submit">
-          Enviar reporte
-        </button>
+        <button class="main-btn" id="btnEnviar" type="submit">Enviar reporte</button>
 
         <div id="mensajeCrear" class="message"></div>
-
       </form>
     </div>
 
     <div id="consultar" class="section">
+      <div class="field">
+        <label for="buscarId">ID de reporte</label>
+        <input type="text" id="buscarId" placeholder="Ej: REP-20260612-193412-1234">
+      </div>
 
-      <label>ID de reporte</label>
-      <input type="text" id="buscarId" placeholder="Ej: REP-20260612-193412-1234">
+      <div class="field">
+        <label for="buscarWhatsapp">WhatsApp del proveedor</label>
+        <p class="helper">Coloca el número de WhatsApp de tu proveedor con el prefijo de tu país. Ejemplo: +591XXXXXXX</p>
+        <input type="text" id="buscarWhatsapp" placeholder="Ej: +59170000000">
+      </div>
 
-      <label>WhatsApp del proveedor</label>
-      <p class="helper">
-        Coloca el número de WhatsApp de tu proveedor con el prefijo de tu país. Ejemplo: +591XXXXXXX
-      </p>
-      <input type="text" id="buscarWhatsapp" placeholder="Ej: +59170000000">
-
-      <button class="main-btn" onclick="consultarReporte()">
-        Consultar
-      </button>
+      <button class="main-btn" onclick="consultarReporte()">Consultar</button>
 
       <div id="mensajeConsulta" class="message"></div>
     </div>
@@ -437,7 +540,6 @@
     <div class="footer">
       Soporte por orden de llegada.
     </div>
-
   </div>
 
   <script>
@@ -461,11 +563,13 @@
       } else {
         document.querySelectorAll('.tab')[1].classList.add('active');
       }
+
+      document.getElementById('mensajeCrear').style.display = 'none';
+      document.getElementById('mensajeConsulta').style.display = 'none';
     }
 
     function generarIdReporte() {
       const fecha = new Date();
-
       const y = fecha.getFullYear();
       const m = String(fecha.getMonth() + 1).padStart(2, '0');
       const d = String(fecha.getDate()).padStart(2, '0');
@@ -478,7 +582,7 @@
     }
 
     function limpiarTelefono(valor) {
-      return String(valor)
+      return String(valor || '')
         .trim()
         .replace(/\s+/g, '')
         .replace(/-/g, '');
@@ -519,26 +623,31 @@
       });
     }
 
-    function llamarJSONP(url) {
+    function llamarJSONP(url, targetMessageId) {
       const script = document.createElement('script');
       script.src = url;
 
       script.onerror = function() {
         mostrarMensaje(
-          'mensajeCrear',
+          targetMessageId,
           'No se pudo conectar con el servidor. Revisa la implementación de Apps Script.',
           'error'
         );
       };
 
       document.body.appendChild(script);
+
+      setTimeout(function() {
+        try {
+          document.body.removeChild(script);
+        } catch (e) {}
+      }, 8000);
     }
 
     document.getElementById('supportForm').addEventListener('submit', function(e) {
       e.preventDefault();
 
       const btnEnviar = document.getElementById('btnEnviar');
-
       const usuario = document.getElementById('usuario').value.trim();
       const whatsapp = limpiarTelefono(document.getElementById('whatsapp').value);
       const plataforma = document.getElementById('plataforma').value.trim();
@@ -600,7 +709,7 @@
         '&detalle=' + encodeURIComponent('') +
         '&callback=' + encodeURIComponent(callbackName);
 
-      llamarJSONP(url);
+      llamarJSONP(url, 'mensajeCrear');
     });
 
     function consultarReporte() {
@@ -624,7 +733,6 @@
             'mensajeConsulta',
             '<div class="result-card">' +
               '<h3 class="result-title">Reporte encontrado</h3>' +
-
               '<div class="result-grid">' +
 
                 '<div class="result-row">' +
@@ -654,9 +762,7 @@
 
                 '<div class="result-row">' +
                   '<span class="result-label">Estado</span>' +
-                  '<div class="result-value">' +
-                    '<span class="status-badge ' + claseEstado + '">' + escapeHTML(respuesta.estado) + '</span>' +
-                  '</div>' +
+                  '<div class="result-value"><span class="status-badge ' + claseEstado + '">' + escapeHTML(respuesta.estado) + '</span></div>' +
                 '</div>' +
 
                 '<div class="result-row result-response">' +
@@ -682,7 +788,7 @@
         '&whatsapp=' + encodeURIComponent(whatsapp) +
         '&callback=' + encodeURIComponent(callbackName);
 
-      llamarJSONP(url);
+      llamarJSONP(url, 'mensajeConsulta');
     }
   </script>
 
