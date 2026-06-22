@@ -546,9 +546,9 @@
         <div class="field">
           <label for="whatsapp">Distribuidor</label>
           <p class="helper">
-            Coloca el número de WhatsApp de tu proveedor con el prefijo de tu país. Ejemplo: +591XXXXXXX
+            Coloca el número de WhatsApp de tu proveedor con el prefijo de tu país, sin colocar el signo +. Ejemplo: 591XXXXXXX
           </p>
-          <input type="text" id="whatsapp" placeholder="Ej: +59170000000" required>
+          <input type="tel" id="whatsapp" placeholder="Ej: 59170000000" required>
         </div>
 
         <div class="field">
@@ -631,9 +631,9 @@
       <div class="field">
         <label for="buscarWhatsapp">WhatsApp del proveedor</label>
         <p class="helper">
-          Coloca el número de WhatsApp de tu proveedor con el prefijo de tu país. Ejemplo: +591XXXXXXX
+          Coloca el número de WhatsApp de tu proveedor con el prefijo de tu país, sin colocar el signo +. Ejemplo: 591XXXXXXX
         </p>
-        <input type="text" id="buscarWhatsapp" placeholder="Ej: +59170000000">
+        <input type="tel" id="buscarWhatsapp" placeholder="Ej: 59170000000">
       </div>
 
       <button class="main-btn" onclick="consultarReporte()">Consultar</button>
@@ -650,6 +650,22 @@
     const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbx6rji2Kxyocf-8TM8wNxlwFQorlvmvypFqCMNM_qMzQBE-L9nL4-0sIArz34puoiXM/exec';
 
     let ultimoIdGenerado = '';
+
+    function bloquearSignoMasEnTelefonos() {
+      const campos = ['whatsapp', 'buscarWhatsapp'];
+
+      campos.forEach(function(id) {
+        const input = document.getElementById(id);
+
+        if (input) {
+          input.addEventListener('input', function() {
+            input.value = input.value.replace(/\+/g, '');
+          });
+        }
+      });
+    }
+
+    bloquearSignoMasEnTelefonos();
 
     function activarOpcionesVerdes() {
       document.querySelectorAll('.option input').forEach(function(input) {
@@ -738,7 +754,8 @@
       return String(valor || '')
         .trim()
         .replace(/\s+/g, '')
-        .replace(/-/g, '');
+        .replace(/-/g, '')
+        .replace(/\+/g, '');
     }
 
     function escapeHTML(valor) {
