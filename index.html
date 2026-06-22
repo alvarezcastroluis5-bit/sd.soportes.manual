@@ -10,7 +10,6 @@
     :root {
       --primary: #111111;
       --primary-dark: #000000;
-      --primary-soft: #f3f4f6;
       --text: #111827;
       --muted: #6b7280;
       --line: #d1d5db;
@@ -211,7 +210,8 @@
       margin-bottom: 8px;
     }
 
-    .option {
+    .option,
+    .sub-option {
       display: flex;
       align-items: center;
       gap: 12px;
@@ -223,13 +223,15 @@
       transition: all 0.2s ease;
     }
 
-    .option:hover {
+    .option:hover,
+    .sub-option:hover {
       transform: translateY(-1px);
       border-color: var(--green);
       box-shadow: 0 8px 18px rgba(34, 197, 94, 0.12);
     }
 
-    .option input {
+    .option input,
+    .sub-option input {
       width: 18px;
       height: 18px;
       margin: 0;
@@ -237,23 +239,56 @@
       flex: 0 0 auto;
     }
 
-    .option span {
+    .option span,
+    .sub-option span {
       font-size: 14px;
       color: #111827;
       line-height: 1.4;
+      font-weight: bold;
     }
 
     .option:has(input:checked),
-    .option.selected {
+    .option.selected,
+    .sub-option:has(input:checked),
+    .sub-option.selected {
       background: var(--green-soft);
       border-color: var(--green);
       box-shadow: 0 8px 18px rgba(34, 197, 94, 0.18);
     }
 
     .option:has(input:checked) span,
-    .option.selected span {
+    .option.selected span,
+    .sub-option:has(input:checked) span,
+    .sub-option.selected span {
       color: var(--green-dark);
       font-weight: bold;
+    }
+
+    .sub-options-box {
+      display: none;
+      margin-top: 14px;
+      margin-bottom: 12px;
+      padding: 15px;
+      border-radius: 18px;
+      background: #f9fafb;
+      border: 1px dashed #22c55e;
+    }
+
+    .sub-options-box.active {
+      display: block;
+    }
+
+    .sub-options-title {
+      font-size: 13px;
+      font-weight: bold;
+      color: #166534;
+      margin-bottom: 10px;
+    }
+
+    .sub-options {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr;
     }
 
     .main-btn {
@@ -453,6 +488,10 @@
       .options {
         grid-template-columns: 1fr 1fr;
       }
+
+      .sub-options {
+        grid-template-columns: 1fr 1fr;
+      }
     }
 
     @media (max-width: 520px) {
@@ -554,6 +593,27 @@
             <input type="radio" name="opcion" value="Código de verificación de 6 dígitos">
             <span>Código de verificación de 6 dígitos</span>
           </label>
+
+          <label class="option">
+            <input type="radio" name="opcion" value="Cambio de cuenta">
+            <span>Cambio de cuenta</span>
+          </label>
+        </div>
+
+        <div id="cambioCuentaBox" class="sub-options-box">
+          <div class="sub-options-title">Motivo del cambio de cuenta</div>
+
+          <div class="sub-options">
+            <label class="sub-option">
+              <input type="radio" name="motivoCambio" value="Cuenta caída">
+              <span>Cuenta caída</span>
+            </label>
+
+            <label class="sub-option">
+              <input type="radio" name="motivoCambio" value="Reintentar pago">
+              <span>Reintentar pago</span>
+            </label>
+          </div>
         </div>
 
         <button class="main-btn" id="btnEnviar" type="submit">Enviar reporte</button>
@@ -601,8 +661,41 @@
           if (input.checked) {
             input.closest('.option').classList.add('selected');
           }
+
+          controlarCambioCuenta();
         });
       });
+
+      document.querySelectorAll('.sub-option input').forEach(function(input) {
+        input.addEventListener('change', function() {
+          document.querySelectorAll('.sub-option').forEach(function(option) {
+            option.classList.remove('selected');
+          });
+
+          if (input.checked) {
+            input.closest('.sub-option').classList.add('selected');
+          }
+        });
+      });
+    }
+
+    function controlarCambioCuenta() {
+      const opcionSeleccionada = document.querySelector('input[name="opcion"]:checked');
+      const cambioBox = document.getElementById('cambioCuentaBox');
+
+      if (opcionSeleccionada && opcionSeleccionada.value === 'Cambio de cuenta') {
+        cambioBox.classList.add('active');
+      } else {
+        cambioBox.classList.remove('active');
+
+        document.querySelectorAll('input[name="motivoCambio"]').forEach(function(input) {
+          input.checked = false;
+        });
+
+        document.querySelectorAll('.sub-option').forEach(function(option) {
+          option.classList.remove('selected');
+        });
+      }
     }
 
     activarOpcionesVerdes();
@@ -725,6 +818,7 @@
       const plataforma = document.getElementById('plataforma').value.trim();
 
       const opcionSeleccionada = document.querySelector('input[name="opcion"]:checked');
+      const motivoCambio = document.querySelector('input[name="motivoCambio"]:checked');
 
       if (!usuario || !whatsapp || !plataforma) {
         mostrarMensaje('mensajeCrear', 'Completa todos los campos obligatorios.', 'error');
@@ -736,7 +830,17 @@
         return;
       }
 
-      const solicitud = opcionSeleccionada.value;
+      let solicitud = opcionSeleccionada.value;
+
+      if (solicitud === 'Cambio de cuenta') {
+        if (!motivoCambio) {
+          mostrarMensaje('mensajeCrear', 'Selecciona el motivo del cambio de cuenta.', 'error');
+          return;
+        }
+
+        solicitud = 'Cambio de cuenta - ' + motivoCambio.value;
+      }
+
       const idReporte = generarIdReporte();
       ultimoIdGenerado = idReporte;
 
@@ -758,9 +862,12 @@
 
           document.getElementById('supportForm').reset();
 
-          document.querySelectorAll('.option').forEach(function(option) {
+          document.querySelectorAll('.option, .sub-option').forEach(function(option) {
             option.classList.remove('selected');
           });
+
+          document.getElementById('cambioCuentaBox').classList.remove('active');
+
         } else {
           mostrarMensaje('mensajeCrear', escapeHTML(respuesta.mensaje), 'error');
         }
